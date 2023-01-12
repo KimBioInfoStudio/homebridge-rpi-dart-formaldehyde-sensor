@@ -113,7 +113,7 @@ export class ExamplePlatformAccessory {
     });
     const parser= port.pipe(new ByteLengthParser({length: 9}));
     parser.on('data', function (chunk) {
-      value = (chunk.readInt8(4)*256 +chunk.readInt8(5))/10000;
+      const value = (chunk.readInt8(4)*256 +chunk.readInt8(5))/10000;
       this.exampleStates.VOCDensity = value;
       this.platform.log.debug('Set Characteristic VOCDensity -> ', value);
       port.destroy();
