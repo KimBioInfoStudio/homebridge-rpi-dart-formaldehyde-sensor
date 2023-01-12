@@ -1,16 +1,16 @@
 {
   "private": true,
-  "displayName": "Plugin Name",
-  "name": "homebridge-plugin-name",
+  "displayName": "Raspberry Pi Dart Formaldehyde Sensor",
+  "name": "homebridge-rpi-dart-formaldehyde-sensor",
   "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
+  "description": "This plugin aims to add a Dart Formaldehyde (HCHO) Sensor which link to your Raspberry Pi via Serial Port",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "https://github.com/KimBioInfoStudio/homebridge-rpi-dart-formaldehyde-sensor.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "https://github.com/KimBioInfoStudio/homebridge-rpi-dart-formaldehyde-sensor/issues"
   },
   "engines": {
     "node": ">=14.18.1",
@@ -26,7 +26,9 @@
   "keywords": [
     "homebridge-plugin"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "serialport": "^10.5.0"
+  },
   "devDependencies": {
     "@types/node": "^16.10.9",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
