@@ -35,7 +35,8 @@ export class ExamplePlatformAccessory {
 
     // get the AirQualitySensor service if it exists, otherwise create a new AirQualitySensor service
     // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.AirQualitySensor) || this.accessory.addService(this.platform.Service.AirQualitySensor);
+    this.service = this.accessory.getService(this.platform.Service.AirQualitySensor) ||
+        this.accessory.addService(this.platform.Service.AirQualitySensor);
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
@@ -58,7 +59,8 @@ export class ExamplePlatformAccessory {
      *
      * To avoid "Cannot add a Service with the same UUID another Service without also defining a unique 'subtype' property." error,
      * when creating multiple services of the same type, you need to use the following syntax to specify a name and subtype id:
-     * this.accessory.getService('NAME') || this.accessory.addService(this.platform.Service.AirQualitySensor, 'NAME', 'USER_DEFINED_SUBTYPE_ID');
+     * this.accessory.getService('NAME') ||
+     *    this.accessory.addService(this.platform.Service.AirQualitySensor, 'NAME', 'USER_DEFINED_SUBTYPE_ID');
      *
      * The USER_DEFINED_SUBTYPE must be unique to the platform accessory (if you platform exposes multiple accessories, each accessory
      * can use the same sub type id.)
@@ -111,12 +113,19 @@ export class ExamplePlatformAccessory {
       path: this.platform.config.SerialPort,
       baudRate: this.platform.config.BaudRate,
     });
-    const parser= port.pipe(new ByteLengthParser({length: 9}));
-    parser.on('data', function (chunk) {
-      const value = (chunk.readInt8(4)*256 +chunk.readInt8(5))/10000;
-      this.exampleStates.VOCDensity = value;
+    const parser = port.pipe(new ByteLengthParser({length: 9}));
+    const p = new Promise((resolve, reject)=> {
+      parser.on('data', (chunk)=> {
+        resolve((chunk.readInt8(4)*256 +chunk.readInt8(5))/10000);
+        port.destroy();
+      });
+    });
+
+    p.then((value)=> {
+      this.exampleStates.VOCDensity = value as number;
       this.platform.log.debug('Set Characteristic VOCDensity -> ', value);
-      port.destroy();
     });
   }
 }
+
+
